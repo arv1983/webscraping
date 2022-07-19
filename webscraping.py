@@ -1,3 +1,4 @@
+from gettext import find
 from selenium import webdriver 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -61,7 +62,14 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chro
 #     # teste = pd.read_html(k)
 #     print(k.text)
 
+def check_exists_by_xpath(path):
 
+    try:
+        driver.find_element(By.XPATH, path)
+    except:
+        return False
+
+    return True
 
 
 url = "https://www.revendadecalcados.com.br/areadorevendedor/produtos"
@@ -91,8 +99,8 @@ tds = soup.find_all(name='div', class_="listing-item")
 #loop em todos os produtos
 
 for i in range(len(tds)):
-    # driver.find_element(By.XPATH, f'/html/body/div[6]/div[3]/div/div/div/div[{i + 1}]/div/div[2]/h6/a').click()
-    driver.find_element(By.XPATH, f'/html/body/div[6]/div[3]/div/div/div/div[{i + 357}]/div/div[2]/h6/a').click()
+    driver.find_element(By.XPATH, f'/html/body/div[6]/div[3]/div/div/div/div[{i + 1}]/div/div[2]/h6/a').click()
+    # driver.find_element(By.XPATH, f'/html/body/div[6]/div[3]/div/div/div/div[{i + 357}]/div/div[2]/h6/a').click()
 
     
     referencia = driver.find_element(By.XPATH, "//*[contains(text(), 'Referência')]").text
@@ -100,34 +108,34 @@ for i in range(len(tds)):
     
     titulo = driver.find_element(By.CLASS_NAME, "page-title.text-left").text
     
-    categoria = driver.find_element(By.XPATH, "//*[contains(text(), 'Categoria')]").text
-    categoria = " ".join(categoria.split()[1:])
+    if check_exists_by_xpath("//*[contains(text(), 'Categoria')]"):
+        categoria = driver.find_element(By.XPATH, "//*[contains(text(), 'Categoria')]").text
+        categoria = " ".join(categoria.split()[1:])
     
-    marca = driver.find_element(By.XPATH, "//*[contains(text(), 'Marca')]").text
-    marca = " ".join(marca.split()[1:])
+    if check_exists_by_xpath("//*[contains(text(), 'Marca')]"):
+        marca = driver.find_element(By.XPATH, "//*[contains(text(), 'Marca')]").text
+        marca = " ".join(marca.split()[1:])
+
 
     descricao = driver.find_element(By.ID, "h2tab1").text
 
     preco = driver.find_element(By.CLASS_NAME, "price").text
 
-    # if(driver.find_element(By.CSS_SELECTOR, "[name*='form']")):
-        
-        
-        # if driver.find_element(By.XPATH, "//*[contains(text(), 'Estoque disponível no momento: ')]") != 0:
-        #     qtd = driver.find_element(By.XPATH, "//*[contains(text(), 'Estoque disponível no momento: ')]").text
-        #     estoque = qtd.split()[4:-1][0]
-        # else:
+    if check_exists_by_xpath("//*[contains(text(), 'Confira abaixo o estoque disponível no momento')]"):
+        variacoes = driver.find_element(By.CSS_SELECTOR, "[name*='form']").get_attribute('outerHTML')
+        soup = BeautifulSoup(variacoes, 'html.parser')
+        tds = soup.find_all(name='td')    
+        tds = [valor.text for valor in tds if 'Confira' not in valor.text]
+        metade = int((str(len(tds) / 2)).split('.')[0])
+        numero = tds[:metade]
+        estoque = tds[metade:]
+        estoque = dict(zip(numero, estoque))
+    else:
+        qtd = driver.find_element(By.XPATH, "//*[contains(text(), 'Estoque disponível no momento: ')]").text
+        estoque = qtd.split()[4:-1][0]
 
     time.sleep(2)  
-    variacoes = driver.find_element(By.CSS_SELECTOR, "[name*='form']").get_attribute('outerHTML')
-    soup = BeautifulSoup(variacoes, 'html.parser')
-    tds = soup.find_all(name='td')    
-    tds = [valor.text for valor in tds if 'Confira' not in valor.text]
-    metade = int((str(len(tds) / 2)).split('.')[0])
-    numero = tds[:metade]
-    estoque = tds[metade:]
-    estoque = dict(zip(numero, estoque))
-
+    
     print(descricao)        
     print(estoque)
     print(marca)
@@ -144,22 +152,22 @@ for i in range(len(tds)):
 
 
 
-    # images = driver.find_elements(By.PARTIAL_LINK_TEXT, "Baixar sem")
-    #     # PEGA IMAGEM OK
-    # for k in range(len(images)):
-    #     driver.find_elements(By.PARTIAL_LINK_TEXT, "Baixar sem")[k].click()
-    #     time.sleep(2) 
+    images = driver.find_elements(By.PARTIAL_LINK_TEXT, "Baixar sem")
+        # PEGA IMAGEM OK
+    for k in range(len(images)):
+        driver.find_elements(By.PARTIAL_LINK_TEXT, "Baixar sem")[k].click()
+        time.sleep(2) 
     
-    # videos = driver.find_elements(By.CSS_SELECTOR, "[title*='Assistir & Baixar Vídeo']")
+    videos = driver.find_elements(By.CSS_SELECTOR, "[title*='Assistir & Baixar Vídeo']")
     
-    # for v in range(len(videos)):
-    #     driver.find_elements(By.CSS_SELECTOR, "[title*='Assistir & Baixar Vídeo']")[v].click()
-    #     time.sleep(2)
-    #     driver.find_element(By.ID, 'botaodownvideo').click()
-    #     time.sleep(2)
-    #     driver.find_element(By.CSS_SELECTOR, "#ModalVideoProduto > div > div > div:nth-child(3) > div > button").click()
-    #     time.sleep(2)
-    #     driver.execute_script("window.history.go(-1)")
+    for v in range(len(videos)):
+        driver.find_elements(By.CSS_SELECTOR, "[title*='Assistir & Baixar Vídeo']")[v].click()
+        time.sleep(2)
+        driver.find_element(By.ID, 'botaodownvideo').click()
+        time.sleep(2)
+        driver.find_element(By.CSS_SELECTOR, "#ModalVideoProduto > div > div > div:nth-child(3) > div > button").click()
+        time.sleep(2)
+        driver.execute_script("window.history.go(-1)")
     time.sleep(2)         
     driver.execute_script("window.history.go(-1)")
     time.sleep(2) 
