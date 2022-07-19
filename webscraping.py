@@ -8,8 +8,9 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 from csv import DictReader, DictWriter
-from os import close
+from os import listdir, rename
 import os.path
+
 
 # 4ibq4au7
 
@@ -27,16 +28,39 @@ import os.path
 options = Options()
 
 
-# webdriver.ChromeOptions.experimental_options.put("download.default_directory", '/teste/imagem')
+# webdriver.ChromeOptions.experimental_options("download.default_directory", '/teste/imagem')
 # chromePrefs.put("download.default_directory", '/teste/imagem')
-options = webdriver.ChromeOptions() 
-options.add_argument("download.default_directory=$PATH:/usr_teste/")
+# options = webdriver.ChromeOptions() 
+
+
+# options.add_argument("download.default_directory=$PATH:/usr_teste/")
+
+
+
+# options = webdriver.ChromeOptions() 
+# options.add_argument("download.default_directory=///home/anderson/Downloads/sss/")
+
+# prefs = {
+# "download.default_directory": r"C:\Users\XXXX\downdir\stamp"+timestr,
+# "download.prompt_for_download": False,
+# "download.directory_upgrade": True
+# }
+
 
 time.sleep(2)
 
+chromeOptions = webdriver.ChromeOptions()
+prefs = {"download.default_directory" : "/home/anderson/Área de Trabalho/webscraping/img"}
+chromeOptions.add_experimental_option("prefs",prefs)
+# chromedriver = "path/to/chromedriver.exe"
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
+
+
 # driver = webdriver.Chrome(chrome_options=options)
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=options)
+# driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+
 # url = "https://www.catalogodecalcados.com.br/estoque"
 # driver.get(url) 
 # driver.implicitly_wait(10)
@@ -99,27 +123,30 @@ tds = soup.find_all(name='div', class_="listing-item")
 #loop em todos os produtos
 
 for i in range(len(tds)):
+
+    data_to_record = {}
+
     driver.find_element(By.XPATH, f'/html/body/div[6]/div[3]/div/div/div/div[{i + 1}]/div/div[2]/h6/a').click()
     # driver.find_element(By.XPATH, f'/html/body/div[6]/div[3]/div/div/div/div[{i + 357}]/div/div[2]/h6/a').click()
 
     
-    referencia = driver.find_element(By.XPATH, "//*[contains(text(), 'Referência')]").text
-    referencia = " ".join(referencia.split()[1:])
+    data_to_record['referencia'] = driver.find_element(By.XPATH, "//*[contains(text(), 'Referência')]").text
+    data_to_record['referencia'] = " ".join(data_to_record['referencia'].split()[1:])
     
-    titulo = driver.find_element(By.CLASS_NAME, "page-title.text-left").text
+    data_to_record['titulo'] = driver.find_element(By.CLASS_NAME, "page-title.text-left").text
     
     if check_exists_by_xpath("//*[contains(text(), 'Categoria')]"):
-        categoria = driver.find_element(By.XPATH, "//*[contains(text(), 'Categoria')]").text
-        categoria = " ".join(categoria.split()[1:])
+        data_to_record['categoria'] = driver.find_element(By.XPATH, "//*[contains(text(), 'Categoria')]").text
+        data_to_record['categoria'] = " ".join(data_to_record['categoria'].split()[1:])
     
     if check_exists_by_xpath("//*[contains(text(), 'Marca')]"):
-        marca = driver.find_element(By.XPATH, "//*[contains(text(), 'Marca')]").text
-        marca = " ".join(marca.split()[1:])
+        data_to_record['marca'] = driver.find_element(By.XPATH, "//*[contains(text(), 'Marca')]").text
+        data_to_record['marca'] = " ".join(data_to_record['marca'].split()[1:])
 
 
-    descricao = driver.find_element(By.ID, "h2tab1").text
+    data_to_record['descricao'] = driver.find_element(By.ID, "h2tab1").text
 
-    preco = driver.find_element(By.CLASS_NAME, "price").text
+    data_to_record['preco'] = driver.find_element(By.CLASS_NAME, "price").text
 
     if check_exists_by_xpath("//*[contains(text(), 'Confira abaixo o estoque disponível no momento')]"):
         variacoes = driver.find_element(By.CSS_SELECTOR, "[name*='form']").get_attribute('outerHTML')
@@ -129,20 +156,20 @@ for i in range(len(tds)):
         metade = int((str(len(tds) / 2)).split('.')[0])
         numero = tds[:metade]
         estoque = tds[metade:]
-        estoque = dict(zip(numero, estoque))
+        data_to_record['estoque'] = dict(zip(numero, estoque))
     else:
         qtd = driver.find_element(By.XPATH, "//*[contains(text(), 'Estoque disponível no momento: ')]").text
         estoque = qtd.split()[4:-1][0]
 
     time.sleep(2)  
     
-    print(descricao)        
-    print(estoque)
-    print(marca)
-    print(referencia)
-    print(titulo)
-    print(categoria)
-    print(preco)
+    print(data_to_record['descricao'])        
+    print(data_to_record['estoque'])
+    print(data_to_record['marca'])
+    print(data_to_record['referencia'])
+    print(data_to_record['titulo'])
+    print(data_to_record['categoria'])
+    print(data_to_record['preco'])
     print('+++++')
 
 
@@ -166,6 +193,7 @@ for i in range(len(tds)):
         driver.find_element(By.ID, 'botaodownvideo').click()
         time.sleep(2)
         driver.find_element(By.CSS_SELECTOR, "#ModalVideoProduto > div > div > div:nth-child(3) > div > button").click()
+
         time.sleep(2)
         driver.execute_script("window.history.go(-1)")
     time.sleep(2)         
@@ -173,3 +201,20 @@ for i in range(len(tds)):
     time.sleep(2) 
     
 time.sleep(5)  
+
+
+
+
+def rename_file_and_move(data):
+    if not os.path.isdir(f'./img/{data["referencia"]}'):
+        os.makedirs(f'./img/{data["referencia"]}')
+    
+    while any([filename.endswith(".crdownload") for filename in 
+            listdir("./img")]):
+        time.sleep(1)
+    
+    acha_novo_arquivo = [f for f in listdir('./img/') if isfile(join('./img/', f))][0]
+    conta_arquivos = len(listdir(f'./img/{data["referencia"]}'))
+    rename(f'./img/{acha_novo_arquivo}', f'./img/{data["referencia"]}/{data["titulo"]} {conta_arquivos}.jpg')
+    return None
+

@@ -1,6 +1,10 @@
 from csv import DictReader, DictWriter
 import json
 import os.path
+from os.path import isfile, join
+# import os.mkdir
+from os import listdir, rename
+import time
 
 ss = "ss\ndd"
 
@@ -39,7 +43,7 @@ obj = {
 'estoque': estoque
 }
 
-# print(obj)
+
 
 headers = ['referencia', 'titulo', 'categoria', 'preco', 'descricao', 'variacao', 'estoque']
 if not os.path.isfile('data.csv'):
@@ -53,22 +57,64 @@ for i in range(len(estoque)):
         open_file = f.readlines()
         
         print(list(estoque.keys())[i])
-        # ss = list(estoque.keys())[i]
+
         obj['variacao'] = list(estoque.keys())[i]
 
         obj['estoque'] = list(estoque.values())[i]
-        # estoque = list(estoque.values())[i]
-        
-        # estoque = list(estoque.keys())[i]
-        # variacao = list(estoque.values()[i])
-        # print(estoque)
-        # obj['variacao'] = 'variacao'
-        # obj['estoque'] = 'estoque'
+
        
         kwargs = [{**obj}]
         writer = DictWriter(f, fieldnames=headers)
         writer.writerows(kwargs)
         f.close()
+
+
+
+
+
+
+referencia = '1referencia'
+titulo = 'meu titulo'
+
+
+# if not os.path.isdir(f'./img/{referencia}'):
+#     os.makedirs(f'./img/{referencia}')
+
+    
+# acha_novo_arquivo = [f for f in listdir('./img/') if isfile(join('./img/', f))][0]
+# conta_arquivos = len(listdir(f'./img/{referencia}'))
+# rename(f'./img/{acha_novo_arquivo}', f'./img/{referencia}/{titulo} {conta_arquivos}.jpg')
+
+
+
+
+def rename_file_and_move(data):
+    if not os.path.isdir(f'./img/{data["referencia"]}'):
+        os.makedirs(f'./img/{data["referencia"]}')
+    
+    while any([filename.endswith(".crdownload") for filename in 
+            listdir("./img")]):
+        time.sleep(1)
+        print('dormir')
+    
+    acha_novo_arquivo = [f for f in listdir('./img/') if isfile(join('./img/', f))][0]
+    conta_arquivos = len(listdir(f'./img/{data["referencia"]}'))
+    rename(f'./img/{acha_novo_arquivo}', f'./img/{data["referencia"]}/{data["titulo"]} {conta_arquivos}.jpg')
+    return None
+
+rename_file_and_move(obj)
+
+
+
+
+
+
+
+
+
+
+
+# print(len(listdir(f'./img/{referencia}')))
 
 # frase = ['1','2','minha frase','33', '33']
 # frase = [valor for valor in frase if 'minha' not in valor ]
