@@ -16,102 +16,6 @@ from os.path import isfile, join
 from category import Category
 
 
-# for i in range(len(get_data)):
-async def login():
-    time.sleep(10)
-    driver.find_element(By.XPATH, "//*[@id='shop-login']/div[1]/div/div/div/div/input").send_keys("ciclista-rs@hotmail.com")
-    driver.find_element(By.XPATH, "//*[@id='shop-login']/div[2]/div/div[1]/div/div/input").send_keys("Arv5683-3")
-    driver.find_element(By.XPATH, "//*[@id='shop-login']/div[4]/div/div/button").click()
-    time.sleep(10)
-    return None
-
-async def add_basic_Information_images_and_videos(ref, titulo, descricao):
-    imagens = [f for f in listdir(f'./img/{ref}') if os.path.splitext(f)[1] == ".jpg"]
-    videos = [f for f in listdir(f'./img/{ref}') if os.path.splitext(f)[1] == ".mp4"]
-
-    for i in range(len(imagens)):
-        driver.find_element(By.XPATH, f"//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[1]/div[2]/div[1]/div[{i + 1}]/div/div/div[1]/div/div/div/input").send_keys(os.path.abspath(f'img/{ref}/{imagens[i]}'))
-        time.sleep(3) 
-
-
-    if videos:
-        driver.find_element(By.XPATH, f"//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[2]/div[2]/div/div/div/div/input").send_keys(os.path.abspath(f'img/{ref}/{videos[0]}'))
-        time.sleep(5) 
-        
-
-    # Titulo
-    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[3]/div[2]/div/div/div/div/div/input").clear()
-    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[3]/div[2]/div/div/div/div/div/input").send_keys(titulo)
-    # descricao
-    time.sleep(1) 
-    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[4]/div[2]/div/div/div/div[1]/textarea").send_keys(descricao)
-    time.sleep(1) 
-
-    return None
-
-async def specify_products(data):
-    time.sleep(1)
-    # Marca - CLICK
-    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[2]/div/div[2]/div[1]/div[1]/div/div[2]/div/div/div/div/div").click()
-    time.sleep(1)
-    # MARCA nome da marca
-    driver.find_element(By.XPATH, "/html/body/div[6]/ul/div[1]/div/input").send_keys("Torricella")
-    time.sleep(1)
-    # Seleciona torricela - click
-    driver.find_element(By.XPATH, "/html/body/div[6]/ul/div[2]/div/div[1]").click()
-    time.sleep(1)
-    # Seleciona origem Brasil CLICK
-    driver.find_element(By.XPATH, "/html/body/div[8]/ul/div[2]/div/div[13]").click()
-    time.sleep(1)
-    driver.find_element(By.XPATH, "/html/body/div[7]/ul/div[2]/div/div[3]").click()    
-    return None
-
-
-async def variation(data):
-    # NOME DA VARIACAO "Tamanho"
-    print(data)
-    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[2]/div/button").click()
-    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[1]/div[2]/div/div/div/div/div/input").send_keys("Tamanho")
-
-
-# Chega esses dados
-# {'referencia': '1000-66C', 'titulo': 'Sandália Rasteira de Dedo', 'categoria': 'Calçados Femininos Rasteiras', 'preco': 'R$ 46,90', 'descricao': 'Código Ref.: 1000-66C\n\nMaterial: Napa Off White / Napa Serpente Off White;\n\nEnfeite: Fivela de Ajuste na Cor Ouro Light, Tiras em Napa Serpente Off White e Canudo de Vinil na tira do dedo;\n\nPalmilha: 4 mm de Espessura, Espuma em EVA, Revestida em Napa Off White;\n\nSolado em PVC Flexível com antiderrapante e na cor Bege.\nDimensões da Caixa: 30 x 16 x 9,5 cm\nPeso do Produto na Caixa: 400 gramas (aproximadamente)', 'variacao': '34', 'estoque': {'34': '5', '35': '6', '36': '17', '37': '12', '38': '6', '39': '4'}, 'marca': 'Torricella', 'image0': 'img/1000-66C/Sandalia Rasteira de Dedo 0.jpg', 'image1': 'img/1000-66C/Sandalia Rasteira de Dedo 1.jpg', 'image2': 'img/1000-66C/Sandalia Rasteira de Dedo 2.jpg', 'image3': 'img/1000-66C/Sandalia Rasteira de Dedo 3.jpg', 'image4': 'img/1000-66C/Sandalia Rasteira de Dedo 4.jpg', 'image5': '', 'image6': '', 'image7': '', 'image8': '', 'image9': '', 'image10': '', 'image11': '', 'image12': '', 'image13': '', 'image14': '', 'image15': '', 'video1': ''}
-
-
-    # Adicionar opçones (se tem 8 opcoes clicar 7)
-
-    # for i in range(len(data[]))
-    # driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[3]/div[2]/div/button").click() 
-    
-
-
-    # Coloca os tamanhanhos
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[1]/div/div/div/div/div/input
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div/div/div/div/input
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[3]/div/div/div/div/div/input
-
-
-    # Preco do produto
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[1]/div[2]/form/div[1]/div/div/div/div/input
-
-    # // aplicar em todos - CLICK
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[1]/div[2]/button
-
-    # 34..
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[1]/div/div/div/div/div/input
-    # 35..
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div/div/div/div/input
-
-    # OPCAO click se tiva mais uma
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[1]/div/div/div/div/div/input
-
-    # edita estoque
-    # 34..
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[2]/div[2]/div/div[2]/div[2]/div[1]/div[2]/div/div/div/div/div/div/div/div/input
-    # 35..
-    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[2]/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div/input
-
-
 
 
 
@@ -142,10 +46,128 @@ get_reference = listdir(f'./img/')[0]
 
 diferentes = []
 
+async def login():
+    time.sleep(10)
+    driver.find_element(By.XPATH, "//*[@id='shop-login']/div[1]/div/div/div/div/input").send_keys("ciclista-rs@hotmail.com")
+    driver.find_element(By.XPATH, "//*[@id='shop-login']/div[2]/div/div[1]/div/div/input").send_keys("Arv5683-3")
+    driver.find_element(By.XPATH, "//*[@id='shop-login']/div[4]/div/div/button").click()
+    time.sleep(10)
+    return None
+
+async def add_basic_Information_images_and_videos(ref, titulo, descricao):
+    imagens = [f for f in listdir(f'./img/{ref}') if os.path.splitext(f)[1] == ".jpg"]
+    videos = [f for f in listdir(f'./img/{ref}') if os.path.splitext(f)[1] == ".mp4"]
+
+    for i in range(len(imagens)):
+        driver.find_element(By.XPATH, f"//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[1]/div[2]/div[1]/div[{i + 1}]/div/div/div[1]/div/div/div/input").send_keys(os.path.abspath(f'img/{ref}/{imagens[i]}'))
+        time.sleep(3) 
+
+    if videos:
+        driver.find_element(By.XPATH, f"//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[2]/div[2]/div/div/div/div/input").send_keys(os.path.abspath(f'img/{ref}/{videos[0]}'))
+        time.sleep(5) 
+
+    # Titulo
+    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[3]/div[2]/div/div/div/div/div/input").clear()
+    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[3]/div[2]/div/div/div/div/div/input").send_keys(titulo)
+    # descricao
+    time.sleep(1) 
+    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[1]/div/div/div[4]/div[2]/div/div/div/div[1]/textarea").send_keys(descricao)
+    time.sleep(1) 
+
+    return None
+
+async def specify_products(data):
+    time.sleep(1)
+    # Marca - CLICK
+    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[2]/div/div[2]/div[1]/div[1]/div/div[2]/div/div/div/div/div").click()
+    time.sleep(1)
+    # MARCA nome da marca
+    driver.find_element(By.XPATH, "/html/body/div[6]/ul/div[1]/div/input").send_keys("Torricella")
+    time.sleep(1)
+    # Seleciona torricela - click
+    driver.find_element(By.XPATH, "/html/body/div[6]/ul/div[2]/div/div[1]").click()
+    time.sleep(1)
+    # Seleciona origem Brasil CLICK
+    driver.find_element(By.XPATH, "/html/body/div[8]/ul/div[2]/div/div[13]").click()
+    time.sleep(1)
+    driver.find_element(By.XPATH, "/html/body/div[7]/ul/div[2]/div/div[3]").click()    
+    return None
+
+
+async def variation(data):
+    # CLICA EM HABILITAR VARIACAO
+    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[2]/div/button").click()
+    # NOME DA VARIACAO "Tamanho"
+    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[1]/div[2]/div/div/div/div/div/input").send_keys("Tamanho")
+    
+    # Clica em add variaçoes
+    for i in range(len(data['estoque']) -1):
+        driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[3]/div[2]/div/button").click()
+
+    # add variacoues
+    for i, k in enumerate(data['estoque']):
+        # variacao
+        driver.find_element(By.XPATH, f"//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[{i + 1}]/div/div/div/div/div/input").send_keys(k)
+        # estoque
+        driver.find_element(By.XPATH, f"//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[2]/div[2]/div/div[2]/div[2]/div[{i+1}]/div[2]/div/div/div/div/div/div/div/div/input").send_keys(data['estoque'][k])
+        # PRECO
+        driver.find_element(By.XPATH, f"//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[2]/div[2]/div/div[2]/div[2]/div[1]/div[{i+1}]/div/div/div/div/div/div/input").send_keys()
+        
+
+
+
+
+
+
+
+
+
+
+
+
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[1]/div[2]/div/div/div/div/div/input
+# Chega esses dados
+# {'referencia': '1000-66C', 'titulo': 'Sandália Rasteira de Dedo', 'categoria': 'Calçados Femininos Rasteiras', 'preco': 'R$ 46,90', 'descricao': 'Código Ref.: 1000-66C\n\nMaterial: Napa Off White / Napa Serpente Off White;\n\nEnfeite: Fivela de Ajuste na Cor Ouro Light, Tiras em Napa Serpente Off White e Canudo de Vinil na tira do dedo;\n\nPalmilha: 4 mm de Espessura, Espuma em EVA, Revestida em Napa Off White;\n\nSolado em PVC Flexível com antiderrapante e na cor Bege.\nDimensões da Caixa: 30 x 16 x 9,5 cm\nPeso do Produto na Caixa: 400 gramas (aproximadamente)', 'variacao': '34', 'estoque': {'34': '5', '35': '6', '36': '17', '37': '12', '38': '6', '39': '4'}, 'marca': 'Torricella', 'image0': 'img/1000-66C/Sandalia Rasteira de Dedo 0.jpg', 'image1': 'img/1000-66C/Sandalia Rasteira de Dedo 1.jpg', 'image2': 'img/1000-66C/Sandalia Rasteira de Dedo 2.jpg', 'image3': 'img/1000-66C/Sandalia Rasteira de Dedo 3.jpg', 'image4': 'img/1000-66C/Sandalia Rasteira de Dedo 4.jpg', 'image5': '', 'image6': '', 'image7': '', 'image8': '', 'image9': '', 'image10': '', 'image11': '', 'image12': '', 'image13': '', 'image14': '', 'image15': '', 'video1': ''}
+    # Adicionar opçones (se tem 8 opcoes clicar 7)
+    # print(data['estoque'][v])
+   
+    driver.find_element(By.XPATH, "//*[@id='app']/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[3]/div[2]/div/button").click() 
+    
+
+    # for v in data['estoque']:
+    
+    # Coloca os tamanhanhos
+
+
+    # Preco do produto
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[1]/div[2]/form/div[1]/div/div/div/div/input
+
+    # // aplicar em todos - CLICK
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[1]/div[2]/button
+
+    # 34..
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[1]/div/div/div/div/div/input
+    # 35..
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div/div/div/div/input
+
+    # OPCAO click se tiva mais uma
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[1]/div/div/div/div/div/input
+
+    # edita estoque
+    # 34..
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[2]/div[2]/div/div[2]/div[2]/div[1]/div[2]/div/div/div/div/div/div/div/div/input
+    # 35..
+    # //*[@id="app"]/div[2]/div/div/div/div/div[1]/section[3]/div/div[1]/div[2]/div[2]/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div/input
+
+
+
+
+
+
+
 
 # for i in range(len(listdir(f'./img/'))):
 for i in range(10):
- 
     sku = listdir(f'./img/')[i]
     print(sku)
 
