@@ -1,6 +1,8 @@
 
-class preco():
+class Preco():
     def precifica(preco):
+        preco = preco.replace("R$ ", "")
+        preco = float(preco.replace(",", "."))
         COMISSAO_SHOPEE = 0.12
         COMISSAO_FABRICANTE = 0.10
 
@@ -10,30 +12,25 @@ class preco():
 
         total = int(round(custo_produto + valor_anunciado + preco,0))
 
+        total = str(total)
+        total = [char for char in total]
+        total[-1] = "9.90"
+        
+        total = float(''.join(total))
+        
 
         match total:
             case total if total < 60:
-                print('menos 60')
+                total += 10
             case total if total >= 60 and total < 100:
-                print('mais 60')
+                total += 20
             case total if total >= 100:                
-                print('mais que 100')
+                total += 30
+        
+        total = str(total) + "0"
+
+        return total.replace(".", ",")
+                
 
 
-teste1 = 37.90
-teste2 = 59.90
-teste3 = 99.90
-teste4 = 129.90
-teste5 = 149.90
-teste6 = 179.90
-
-preco.precifica(teste3)
-
-# add comissao shope
-# multiplica 2
-
-# arredonda para *9,90
-
-# até 60 R$ 10
-# 60,01 até 100 R$ 20
-# 101,01  R$ 30
+# print(Preco.precifica("R$ 46,90"))
