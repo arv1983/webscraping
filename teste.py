@@ -21,11 +21,6 @@ from unidecode import unidecode
 
 # data = {'referencia': '1000-66C', 'titulo': 'Sandália Rasteira de Dedo', 'categoria': 'Calçados Femininos Rasteiras', 'preco': 'R$ 46,90', 'descricao': 'Código Ref.: 1000-66C\n\nMaterial: Napa Off White / Napa Serpente Off White;\n\nEnfeite: Fivela de Ajuste na Cor Ouro Light, Tiras em Napa Serpente Off White e Canudo de Vinil na tira do dedo;\n\nPalmilha: 4 mm de Espessura, Espuma em EVA, Revestida em Napa Off White;\n\nSolado em PVC Flexível com antiderrapante e na cor Bege.\nDimensões da Caixa: 30 x 16 x 9,5 cm\nPeso do Produto na Caixa: 400 gramas (aproximadamente)', 'variacao': '34', 'estoque': {'34': '5', '35': '6', '36': '17', '37': '12', '38': '6', '39': '4'}, 'marca': 'Torricella', 'image0': 'img/1000-66C/Sandalia Rasteira de Dedo 0.jpg', 'image1': 'img/1000-66C/Sandalia Rasteira de Dedo 1.jpg', 'image2': 'img/1000-66C/Sandalia Rasteira de Dedo 2.jpg', 'image3': 'img/1000-66C/Sandalia Rasteira de Dedo 3.jpg', 'image4': 'img/1000-66C/Sandalia Rasteira de Dedo 4.jpg', 'image5': '', 'image6': '', 'image7': '', 'image8': '', 'image9': '', 'image10': '', 'image11': '', 'image12': '', 'image13': '', 'image14': '', 'image15': '', 'video1': ''}
 
-teste = [0,1]
-print(type(teste))
-
-if type(teste) == list:
-    print('é list')
 
 # # for i in range(len(data['estoque']) -1):
 # #     print(i)

@@ -191,13 +191,13 @@ async def others(sku):
 
 
 for i in range(len(listdir(f'./img/'))):
-    
-    if i < 381:
+    if i < 559:
         continue
     sku = listdir(f'./img/')[i]
 
     print(i)
     print(sku)
+    print(len(listdir(f'./img/')))
 
     with open('data.csv', "r") as f:
         open_file = f.readlines()
