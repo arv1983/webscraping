@@ -1,3 +1,4 @@
+from ast import Break
 from gettext import find
 from optparse import OptionContainer
 from numpy import empty, ones
@@ -103,25 +104,23 @@ sheet = wb.active
 
 def atualiza(sku, id):
     print(sku)
-    print(id)
 
-
-list_sku = []
+list_dict = {}
+# list_sku = []
 def search_sku():
     for ws in wb.worksheets:
-    # Iterate over the columns and rows, search for the text and replace
         for row in ws.iter_rows(max_col=8, min_col=0, max_row=30, min_row=5,):
-            # print(row[0].value)
-            # print(row[4].value)
             if row[4].value != None:
-                list_sku.append([row[0].value, row[4].value])
-            for cell in row:
-                # print(cell.value)
-                cell
+                # list_sku.append([row[0].value, row[4].value])
+                list_dict[row[0].value] = row[4].value
+
 
 search_sku()
-# print(list_sku[1][0])
 
-print(list_sku)
-atualiza(list_sku[1][1],list_sku[1][0])
+for i, a in enumerate(sheet, 5):
+    if (sheet[i][0].value == None):
+        break
+    print(i)
+    print(sheet[i][0].value)
 
+print(list_dict['21929282857'])
